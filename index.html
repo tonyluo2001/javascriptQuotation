@@ -1,13 +1,16 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Quotaiton Formatter and Calculator</title>
+    <title>Surveillance Quote Generator</title>
     <script src="surveillance.js"></script>
 </head>
 
 <body>
     <h1>Surveillance Quote Generator</h1>
+    <p>Camera quantity: </p>
+    <input id="camQty" type="number" value="1">
     <br>
+
     <label>
         <select id="surveillance" onchange="selectSurveillance()">
             <option>IP Camera</option>
@@ -17,19 +20,156 @@
     <br>
     <p id="camSelection">Quoting IP System</p>
 
-    <p>Camera quantity: </p>
-    <input id="camQty" type="number" value="1">
 
-    <br>
-    <!-- <div id="IP Section" style="visibility: visible;">
-        <p>IP visibility</p>
-    
-    </div>
 
-    <div id="Analog Section" style="visibility: visible;">
-        <p>Analog visibility</p>
-    
-    </div> -->
+    <table border="1" style="display: inline-block;">
+        <tr>
+            <th>IP Items</th>
+            <th>Quantity</th>
+        </tr>
+
+        <tr>
+            <td>8CH NVR</td>
+            <td>
+                <input id="nvr8ch" class="ip" type="number" value="1" min="0">
+            </td>
+        </tr>
+
+        <tr>
+            <td>16CH NVR</td>
+            <td>
+                <input id="nvr16ch" class="ip" type="number" value="0" min="0">
+            </td>
+        </tr>
+
+        <tr>
+            <td>32CH NVR</td>
+            <td>
+                <input id="nvr32ch" class="ip" type="number" value="0" min="0">
+            </td>
+        </tr>
+
+        <tr>
+            <td>64CH NVR</td>
+            <td>
+                <input id="nvr64ch" class="ip" type="number" value="0" min="0">
+            </td>
+        </tr>
+
+        <tr>
+            <td>16P POE Switch</td>
+            <td>
+                <input id="poe16ch" class="ip" type="number" value="0" min="0">
+            </td>
+        </tr>
+
+        <tr>
+            <td>24P POE Switch</td>
+            <td>
+                <input id="poe24ch" class="ip" type="number" value="0" min="0">
+            </td>
+        </tr>
+
+    </table>
+
+    <table border="1" style="display: inline-block;">
+        <tr>
+            <th>Analog Items</th>
+            <th>Quantity</th>
+        </tr>
+
+        <tr>
+            <td>8CH DVR</td>
+            <td>
+                <input id="dvr8ch" class="analog" type="number" value="0" min="0">
+            </td>
+        </tr>
+
+        <tr>
+            <td>16CH DVR</td>
+            <td>
+                <input id="dvr16ch" class="analog" type="number" value="0" min="0">
+            </td>
+        </tr>
+
+        <tr>
+            <td>32CH DVR</td>
+            <td>
+                <input id="dvr32ch" class="analog" type="number" value="0" min="0">
+            </td>
+        </tr>
+
+        <tr>
+            <td>9CH Power Box</td>
+            <td>
+                <input id="pb9ch" class="analog" type="number" value="0" min="0">
+            </td>
+        </tr>
+
+        <tr>
+            <td>18CH Power Box</td>
+            <td>
+                <input id="pb18ch" class="analog" type="number" value="0" min="0">
+            </td>
+        </tr>
+
+        <tr style="visibility: hidden;">
+            <td>FILLER</td>
+            <td>FILLER</td>
+        </tr>
+
+    </table>
+
+    <table border="1">
+        <tr>
+            <th>Items</th>
+            <th>Quantity</th>
+        </tr>
+
+        <tr>
+            <td>22in Monitor</td>
+            <td>
+                <input id="mon22in" type="number" value="1" min="0">
+            </td>
+        </tr>
+
+        <tr>
+            <td>40in Monitor</td>
+            <td>
+                <input id="mon40in" type="number" value="0" min="0">
+            </td>
+        </tr>
+
+        <tr>
+            <td>2TB HDD</td>
+            <td>
+                <input id="hd2tb" type="number" value="0" min="0">
+            </td>
+        </tr>
+
+        <tr>
+            <td>4TB HDD</td>
+            <td>
+                <input id="hd4tb" type="number" value="0" min="0">
+            </td>
+        </tr>
+
+        <tr>
+            <td>8TB HDD</td>
+            <td>
+                <input id="hd8tb" type="number" value="0" min="0">
+            </td>
+        </tr>
+
+        <tr>
+            <td>HDMI Extender</td>
+            <td>
+                <input id="hdmiExt" type="number" value="0" min="0">
+            </td>
+        </tr>
+
+
+    </table>
 
 
 
