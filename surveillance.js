@@ -3,6 +3,9 @@ var text;
 var camQty;
 var ipInput = document.getElementsByClassName("ip");
 var analogInput = document.getElementsByClassName("analog");
+var mon22in = document.getElementById("mon22in");
+var mon40in = document.getElementById("mon40in");
+var hdmiExt = document.getElementById("hdmiExt");
 
 
 // NvrConfig class to process IP recorder calculation
@@ -57,6 +60,8 @@ class NvrConfig {
         document.getElementById("nvr64ch").value = this.nvr64ch;
         document.getElementById("poe16ch").value = this.poe16ch;
         document.getElementById("poe24ch").value = this.poe24ch;
+        document.getElementById("hd4tb").value = this.nvr8ch;
+        document.getElementById("hd8tb").value = this.nvr16ch + this.nvr32ch * 2;
     }
 
 }
@@ -101,13 +106,12 @@ class DvrConfig {
         document.getElementById("dvr32ch").value = this.dvr32ch;
         document.getElementById("pb9ch").value = this.pb9ch;
         document.getElementById("pb18ch").value = this.pb18ch;
+        document.getElementById("hd2tb").value = this.dvr8ch;
+        document.getElementById("hd4tb").value = this.dvr16ch;
+        document.getElementById("hd8tb").value = this.dvr32ch;
     }
 
 }
-
-var mon22in = document.getElementById("mon22in");
-var mon40in = document.getElementById("mon40in");
-var hdmiExt = document.getElementById("hdmiExt");
 
 
 function selectSurveillance() {
@@ -119,6 +123,10 @@ function selectSurveillance() {
     // console.log(ipInput);
     analogInput = document.getElementsByClassName("analog");    //a group of input for analog devices
     // console.log(analogInput);
+
+    document.getElementById("hd2tb").value = 0;
+    document.getElementById("hd4tb").value = 0;
+    document.getElementById("hd8tb").value = 0;
 
     // console.log(surveillance.value);
     if (surveillance.value == "IP Camera") {
