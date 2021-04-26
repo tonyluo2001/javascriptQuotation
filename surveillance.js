@@ -175,4 +175,12 @@ function enableInput(inputGroup) {
     }
 }
 
+function writeCostTable() {
+
+}
+
+function writeQuote() {
+
+}
+
 
