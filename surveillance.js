@@ -1,17 +1,8 @@
-var surveillance;
-var text;
-var camQty;
-var ipInput = document.getElementsByClassName("ip");
-var analogInput = document.getElementsByClassName("analog");
-var mon22in = document.getElementById("mon22in");
-var mon40in = document.getElementById("mon40in");
-var hdmiExt = document.getElementById("hdmiExt");
-
-
 // NvrConfig class to process IP recorder calculation
 class NvrConfig {
     constructor(qty) {
         this.initializeIP(qty);
+        
     }
 
     initializeIP(qty) {
@@ -24,9 +15,9 @@ class NvrConfig {
         this.poe24ch = 0;
     }
 
-    calculateIP() {
-        this.initializeIP(this.camQty);
-        console.log("IP Camera Quantity: " + this.camQty);
+    calculateIP(qty) {
+        this.initializeIP(qty);
+        // console.log("IP Camera Quantity: " + this.camQty);
         if (this.camQty <= 8) {
             this.nvr8ch = 1;
         } else if (this.camQty <= 16) {
@@ -61,7 +52,7 @@ class NvrConfig {
         document.getElementById("poe16ch").value = this.poe16ch;
         document.getElementById("poe24ch").value = this.poe24ch;
         document.getElementById("hd4tb").value = this.nvr8ch;
-        document.getElementById("hd8tb").value = this.nvr16ch + this.nvr32ch * 2;
+        document.getElementById("hd8tb").value = this.nvr16ch + this.nvr32ch * 2 + this.nvr64ch * 4;
     }
 
 }
@@ -81,8 +72,8 @@ class DvrConfig {
         this.pb18ch = 0;
     }
 
-    calculateAnalog() {
-        this.initializeAnalog(this.camQty);
+    calculateAnalog(qty) {
+        this.initializeAnalog(qty);
         if (this.camQty <= 8) {
             this.dvr8ch = 1;
             if (this.camQty <= 4) {
@@ -112,6 +103,19 @@ class DvrConfig {
     }
 
 }
+
+
+var surveillance;
+var text;
+var camQty = 1;
+var ipInput;
+var analogInput;
+var nvrConfig = new NvrConfig(camQty);
+var dvrConfig = new DvrConfig(camQty);
+
+var mon22in = document.getElementById("mon22in");
+var mon40in = document.getElementById("mon40in");
+var hdmiExt = document.getElementById("hdmiExt");
 
 
 function selectSurveillance() {
@@ -148,13 +152,13 @@ function calculateRecorder() {
     // console.log("calculateRecorder() called, camera quantity: " + camQty);
     surveillance = document.getElementById("surveillance");
     // console.log(surveillance.value);
+
     if (surveillance.value == "IP Camera") {
-        var nvrConfig = new NvrConfig(camQty);
-        nvrConfig.calculateIP();
+        nvrConfig.calculateIP(camQty);
+
         // calculateIP(camQty);
     } else if (surveillance.value == "Analog Camera") {
-        var dvrConfig = new DvrConfig(camQty);
-        dvrConfig.calculateAnalog();
+        dvrConfig.calculateAnalog(camQty);
     }
 
 }
@@ -175,7 +179,21 @@ function enableInput(inputGroup) {
     }
 }
 
+function printTables() {
+    surveillance = document.getElementById("surveillance");
+    if (surveillance.value == "IP Camera") {
+        nvrConfig.calculateIP(camQty);
+
+        // calculateIP(camQty);
+    } else if (surveillance.value == "Analog Camera") {
+        dvrConfig.calculateAnalog(camQty);
+    }
+
+
+}
+
 function writeCostTable() {
+
 
 }
 
