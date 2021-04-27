@@ -12,43 +12,45 @@ class NvrConfig {
     }
 
     initializeIP() {
-        this.nvr8ch.setAttribute("value", 0);
-        this.nvr16ch.setAttribute("value", 0);
-        this.nvr32ch.setAttribute("value", 0);
-        this.nvr64ch.setAttribute("value", 0);
-        this.poe16ch.setAttribute("value", 0);
-        this.poe24ch.setAttribute("value", 0);
+        this.nvr8ch.value = 0;
+        this.nvr16ch.value = 0;
+        this.nvr32ch.value = 0;
+        this.nvr64ch.value = 0;
+        this.poe16ch.value = 0;
+        this.poe24ch.value = 0;
 
     }
 
     calculateIP() {
         this.initializeIP();
+        console.log("IP cameras: " + this.camQty.value);
+
         // console.log("IP Camera Quantity: " + this.camQty);
         if (this.camQty.value <= 8) {
-            this.nvr8ch.setAttribute("value", 1);
+            this.nvr8ch.value = 1;
         } else if (this.camQty.value <= 16) {
-            this.nvr16ch.setAttribute("value", 1);
+            this.nvr16ch.value = 1;
         } else if (this.camQty.value <= 32) {
-            this.nvr32ch.setAttribute("value", 1);
+            this.nvr32ch.value = 1;
             if (this.camQty.value <= 24) {
-                this.poe24ch.setAttribute("value", 1);
+                this.poe24ch.value = 1;
             } else {
-                this.poe16ch.setAttribute("value", 2);
+                this.poe16ch.value = 2;
             }
         } else {
-            this.nvr64ch.setAttribute("value", 1);
+            this.nvr64ch.value = 1;
             if (this.camQty.value <= 40) {
-                this.poe16ch.setAttribute("value", 1);
-                this.poe24ch.setAttribute("value", 1);
+                this.poe16ch.value = 1;
+                this.poe24ch.value = 1;
             } else if (this.camQty.value <= 48) {
-                this.poe24ch.setAttribute("value", 2);
+                this.poe24ch.value = 2;
             } else {
-                this.poe16ch.setAttribute("value", 1);
-                this.poe24ch.setAttribute("value", 2);
+                this.poe16ch.value = 1;
+                this.poe24ch.value = 2;
             }
         }
-        hd4tb.setAttribute("value", parseInt(this.nvr8ch.value));
-        hd8tb.setAttribute("value", parseInt(this.nvr16ch.value) + parseInt(this.nvr32ch.value) * 2 + parseInt(this.nvr64ch.value) * 4);
+        hd4tb.value = parseInt(this.nvr8ch.value);
+        hd8tb.value = parseInt(this.nvr16ch.value) + parseInt(this.nvr32ch.value) * 2 + parseInt(this.nvr64ch.value) * 4;
     }
 
 }
@@ -66,28 +68,29 @@ class DvrConfig {
     }
 
     initializeAnalog() {
-        this.dvr8ch.setAttribute("value", 0);
-        this.dvr16ch.setAttribute("value", 0);
-        this.dvr32ch.setAttribute("value", 0);
-        this.pb9ch.setAttribute("value", 0);
-        this.pb18ch.setAttribute("value", 0);
+        this.dvr8ch.value = 0;
+        this.dvr16ch.value = 0;
+        this.dvr32ch.value = 0;
+        this.pb9ch.value = 0;
+        this.pb18ch.value = 0;
     }
 
     calculateAnalog() {
         this.initializeAnalog();
+        console.log("analog cameras: " + this.camQty.value);
         if (this.camQty.value <= 8) {
-            this.dvr8ch.setAttribute("value", 1);
+            this.dvr8ch.value = 1;
             if (this.camQty.value <= 4) {
-                this.pb9ch.setAttribute("value", 1);
+                this.pb9ch.value = 1;
             } else {
-                this.pb18ch.setAttribute("value", 1);
+                this.pb18ch.value = 1;
             }
         } else if (this.camQty.value <= 16) {
-            this.dvr16ch.setAttribute("value", 1);
-            this.pb18ch.setAttribute("value", 1);
+            this.dvr16ch.value = 1;
+            this.pb18ch.value = 1;
         } else {
-            this.dvr32ch.setAttribute("value", 1);
-            this.pb18ch.setAttribute("value", 2);
+            this.dvr32ch.value = 1;
+            this.pb18ch.value = 2;
         }
     }
 
@@ -144,7 +147,6 @@ function calculateRecorder() {
 
     if (surveillance.value == "IP Camera") {
         nvrConfig.calculateIP();
-
         // calculateIP(camQty);
     } else if (surveillance.value == "Analog Camera") {
         dvrConfig.calculateAnalog();
@@ -158,9 +160,9 @@ function disableInput(inputGroup) {
         inputGroup[i].value = 0;
         inputGroup[i].disabled = true;
     }
-    hd2tb.setAttribute("value", 0);
-    hd4tb.setAttribute("value", 0);
-    hd8tb.setAttribute("value", 0);
+    hd2tb.value = 0;
+    hd4tb.value = 0;
+    hd8tb.value = 0;
 }
 
 // enable inputs of either IP or analog system based on selection
