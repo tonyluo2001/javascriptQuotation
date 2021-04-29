@@ -23,7 +23,7 @@ class NvrConfig {
 
     calculateIP() {
         this.initializeIP();
-        console.log("IP cameras: " + this.camQty.value);
+        // console.log("IP cameras: " + this.camQty.value);
 
         // console.log("IP Camera Quantity: " + this.camQty);
         if (this.camQty.value <= 8) {
@@ -77,7 +77,7 @@ class DvrConfig {
 
     calculateAnalog() {
         this.initializeAnalog();
-        console.log("analog cameras: " + this.camQty.value);
+        // console.log("analog cameras: " + this.camQty.value);
         if (this.camQty.value <= 8) {
             this.dvr8ch.value = 1;
             if (this.camQty.value <= 4) {
@@ -92,6 +92,10 @@ class DvrConfig {
             this.dvr32ch.value = 1;
             this.pb18ch.value = 2;
         }
+
+        hd2tb.value = parseInt(this.dvr8ch.value);
+        hd4tb.value = parseInt(this.dvr16ch.value);
+        hd8tb.value = parseInt(this.dvr32ch.value);
     }
 
 }
@@ -137,6 +141,8 @@ function selectSurveillance() {
         disableInput(ipInput);
         disableInput(analogInput);
     }
+
+    calculateRecorder();
 }
 
 function calculateRecorder() {
@@ -173,21 +179,32 @@ function enableInput(inputGroup) {
     }
 }
 
+//calculate hdd quantity based on recorder quantities
+function calculateHdd() {
+
+}
+
 function printTables() {
     surveillance = document.getElementById("surveillance");
     if (surveillance.value == "IP Camera") {
-        nvrConfig.calculateIP();
+        writeCostTable(document.getElementById("ip input table"));
 
         // calculateIP(camQty);
-    } else if (surveillance.value == "Analog Camera") {
-        dvrConfig.calculateAnalog();
+    } else {
+        writeCostTable(document.getElementById("analog input table"));
+
     }
 
 
 }
 
-function writeCostTable() {
-
+// get the items names and qty from input tables and print to document
+function writeCostTable(table) {
+    // console.log(table.getAttribute("id"));
+    var costTable = document.createElement("table");
+    costTable.setAttribute("id", "costTable");
+    costTable.insertRow();
+    console.log(table.rows[1].cells[1].firstChild.value);
 
 }
 

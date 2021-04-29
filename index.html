@@ -28,7 +28,7 @@
     <p id="camSelection">Quoting IP System</p>
 
 
-    <table border="1" style="display: inline-block;">
+    <table id="ip input table" border="1" style="display: inline-block;">
         <tr>
             <th>IP Items</th>
             <th>Quantity</th>
@@ -78,7 +78,7 @@
 
     </table>
 
-    <table border="1" style="display: inline-block;">
+    <table id="analog input table" border="1" style="display: inline-block;">
         <tr>
             <th>Analog Items</th>
             <th>Quantity</th>
@@ -126,7 +126,7 @@
 
     </table>
 
-    <table border="1">
+    <table id="hd input table" border="1">
         <tr>
             <th>Items</th>
             <th>Quantity</th>
@@ -174,8 +174,12 @@
             </td>
         </tr>
 
-
     </table>
+
+    <button id="generate button" onclick="printTables()">Generate!</button>
+    <br>
+
+    <div id="output"></div>
 
 
 
