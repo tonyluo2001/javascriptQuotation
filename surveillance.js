@@ -116,6 +116,12 @@ var mon22in = document.getElementById("mon22in");
 var mon40in = document.getElementById("mon40in");
 var hdmiExt = document.getElementById("hdmiExt");
 
+var output = document.getElementById("output");
+
+var serviceTerms = ["Provide, Wire & Instal: ", "Provide & Install: ", "Provide, Install & Configure: "];
+
+
+
 function selectSurveillance() {
     surveillance = document.getElementById("surveillance");
     text = document.getElementById("camSelection");
@@ -200,13 +206,34 @@ function printTables() {
 
 // get the items names and qty from input tables and print to document
 function writeCostTable(table) {
-    // console.log(table.getAttribute("id"));
+
+    // determine if there's an existing table. if yes, remove it
+    while (output.hasChildNodes()) {
+        output.removeChild(output.childNodes[0]);
+    }
+
+    // create a costTable
     var costTable = document.createElement("table");
     costTable.setAttribute("id", "costTable");
-    costTable.insertRow();
-    console.log(table.rows[1].cells[1].firstChild.value);
+    costTable.setAttribute("border", "1");
 
+    // copy the input table to output table, including adding rows and cells
+    for (var row = 1; row < table.rows.length; row++) {
+        var costRow = costTable.insertRow();
+        var cell1 = costRow.insertCell(0);
+        var cell2 = costRow.insertCell(1);
+
+        cell1.innerHTML = table.rows[row].cells[0].innerHTML;
+        cell2.innerHTML = table.rows[row].cells[1].children[0].value;
+    }
+
+    // print out costTable
+    output.appendChild(costTable);
 }
+// costTable.insertRow();
+// console.log(table.rows[3].cells[1].children[0].value);
+
+
 
 function writeQuote() {
 
