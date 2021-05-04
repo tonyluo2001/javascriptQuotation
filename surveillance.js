@@ -192,6 +192,11 @@ function calculateHdd() {
 
 function printTables() {
     surveillance = document.getElementById("surveillance");
+
+    // determine if there's an existing table. if yes, remove it
+    while (output.hasChildNodes()) {
+        output.removeChild(output.childNodes[0]);
+    }
     if (surveillance.value == "IP Camera") {
         writeCostTable(document.getElementById("ip input table"));
 
@@ -201,16 +206,16 @@ function printTables() {
 
     }
 
+    writeCostTable(document.getElementById("hd input table"));
 
 }
 
 // get the items names and qty from input tables and print to document
 function writeCostTable(table) {
 
-    // determine if there's an existing table. if yes, remove it
-    while (output.hasChildNodes()) {
-        output.removeChild(output.childNodes[0]);
-    }
+
+
+    // console.log("removed items.");
 
     // create a costTable
     var costTable = document.createElement("table");
@@ -223,12 +228,19 @@ function writeCostTable(table) {
         var cell1 = costRow.insertCell(0);
         var cell2 = costRow.insertCell(1);
 
-        cell1.innerHTML = table.rows[row].cells[0].innerHTML;
-        cell2.innerHTML = table.rows[row].cells[1].children[0].value;
+        if (table.rows[row].cells[0].innerHTML != "FILLER") {
+            cell1.innerHTML = table.rows[row].cells[0].innerHTML;
+            // console.log(cell1.innerHTML);
+            cell2.innerHTML = table.rows[row].cells[1].children[0].value;
+        } else {
+            costTable.deleteRow(-1);
+        }
+
     }
 
     // print out costTable
     output.appendChild(costTable);
+
 }
 // costTable.insertRow();
 // console.log(table.rows[3].cells[1].children[0].value);
