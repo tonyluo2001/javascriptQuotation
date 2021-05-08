@@ -105,6 +105,8 @@ var text;
 var camQty = 1;
 var ipInput;
 var analogInput;
+var labor;
+var cable;
 var nvrConfig = new NvrConfig();
 var dvrConfig = new DvrConfig();
 
@@ -118,7 +120,26 @@ var hdmiExt = document.getElementById("hdmiExt");
 
 var output = document.getElementById("output");
 
-var serviceTerms = ["Provide, Wire & Instal: ", "Provide & Install: ", "Provide, Install & Configure: "];
+var serviceTerms = ["Provide, Wire & Instal: (", "Provide & Install: (", "Provide, Install & Configure: (", " with ", " Storage & HDMI Output;"];
+
+const descriptMap = new Map(
+    [
+        ["8CH NVR", ") 8-channel network video recorder "],
+        ["16CH NVR", ") 16-channel network video recorder "],
+        ["32CH NVR", ") 32-channel network video recorder "],
+        ["64CH NVR", ") 64-channel network video recorder "],
+        ["16P POE Switch", ") 16-channel fast internet POE switch for cameras;"],
+        ["24P POE Switch", ") 24-channel fast internet POE switch for cameras;"],
+        ["8CH DVR", ") 8-channel digital video recorder "],
+        ["16CH DVR", ") 16-channel digital video recorder "],
+        ["32CH DVR", ") 8-channel digital video recorder "],
+        ["9CH Power Box", ") 9-channel power supply box for cameras;"],
+        ["18CH Power Box", ") 18-channel power supply box for cameras;"],
+
+    ]
+
+
+);
 
 
 
@@ -186,9 +207,9 @@ function enableInput(inputGroup) {
 }
 
 //calculate hdd quantity based on recorder quantities
-function calculateHdd() {
+// function calculateHdd() {
 
-}
+// }
 
 function printTables() {
     surveillance = document.getElementById("surveillance");
@@ -208,12 +229,12 @@ function printTables() {
 
     writeCostTable(document.getElementById("hd input table"));
 
+    writeQuote();
+
 }
 
 // get the items names and qty from input tables and print to document
 function writeCostTable(table) {
-
-
 
     // console.log("removed items.");
 
@@ -238,6 +259,26 @@ function writeCostTable(table) {
 
     }
 
+    // print cable and labor cost only when all other materials have been printed
+    if (cell1.innerHTML == "HDMI Extender") {
+        // insert the cable row
+        costRow = costTable.insertRow();
+        cable = document.getElementById("camQty").value * document.getElementById("cableLength").value / 1000;
+        cell1 = costRow.insertCell(0);
+        cell1.innerHTML = "Cable";
+        cell2 = costRow.insertCell(1);
+        cell2.innerHTML = cable;
+
+        // insert the labor row
+        costRow = costTable.insertRow();
+        labor = document.getElementById("labor").value;
+        cell1 = costRow.insertCell(0);
+        cell1.innerHTML = "Labor";
+        cell2 = costRow.insertCell(1);
+        cell2.innerHTML = labor;
+    }
+
+
     // print out costTable
     output.appendChild(costTable);
 
@@ -246,8 +287,31 @@ function writeCostTable(table) {
 // console.log(table.rows[3].cells[1].children[0].value);
 
 
-
 function writeQuote() {
+    var costTable = document.getElementById("costTable");
+    var quoteTable = document.createElement("table");
+    var quoteRow;
+    var quoteCell;
+    var itemQty;
+    quoteTable.setAttribute("id", "quoteTable");
+    quoteTable.setAttribute("border", "1");
+
+    for (var row = 0; row < costTable.rows.length; row++) {
+        if (costTable.rows[row].cells[1].innerHTML != 0) {
+            quoteRow = quoteTable.insertRow();
+            quoteCell = quoteRow.insertCell(0);
+            itemQty = serviceTerms[2].concat(costTable.rows[row].cells[1].innerHTML);
+            // console.log(descriptMap.get(costTable.rows[row].cells[0].innerHTML));
+            quoteCell.innerHTML = itemQty.concat(descriptMap.get((costTable.rows[row].cells[0].innerHTML)));
+
+            if (quoteCell.innerHTML.search("recorder") > 0) {
+                quoteCell.innerHTML = quoteCell.innerHTML.concat(serviceTerms[3], serviceTerms[4]);
+            }
+        }
+
+    }
+
+    output.appendChild(quoteTable);
 
 }
 
