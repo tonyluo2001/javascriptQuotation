@@ -3,11 +3,96 @@
 
 <head>
     <title>Surveillance Quote Generator</title>
+    <style>
+        body,
+        html {
+            height: 100%;
+            margin: 0;
+            font-family: Arial;
+        }
+
+        .tablink {
+            background-color: rgb(103, 148, 179);
+            color: black;
+            float: left;
+            width: 50%;
+            border: none;
+            cursor: -moz-grab;
+            height: 50px;
+            font-size: 20px;
+        }
+
+        .tablink:hover {
+            background-color: gray;
+        }
+    </style>
+
+
     <script src="surveillance.js" defer></script>
 </head>
 
 <body>
-    <h1>Surveillance Quote Generator</h1>
+    <button id="IPBtn" class="tablink" onclick="selectSystem('IP')">IP Cameras</button>
+
+    <button id="AnalogBtn" class="tablink" onclick="selectSystem('Analog')">Analog Cameras</button>
+
+
+
+    <div id="IP" class="tabcontent">
+        <h2>IP Camera System</h2>
+
+        <ul>
+            <li>
+                <p class="items">
+                    <select name="" id="" class="serviceTerm"></select>
+                    <input type="number" id="ipCamQty" , min="1" , max="200">) 4MP wide-angle dome security cameras;
+                </p>
+            </li>
+            <li>
+                <p class="recorder">
+                    <select name="" id="" class="serviceTerm"></select>
+                    <input type="number" id="nvr8chQty" , min="1" , max="5">) 8-channel network video recorder with
+                    <select name="" id="" class="hd"></select>TB storage & HDMI output;
+                </p>
+            </li>
+            <li>
+                <p class="recorder">
+                    <select name="" id="" class="serviceTerm"></select>
+                    <input type="number" id="nvr16chQty" , min="0" , max="5">) 16-channel network video recorder with
+                    <select name="" id="" class="hd"></select>TB storage & HDMI output;
+                </p>
+            </li>
+            <li>
+                <p class="recorder">
+                    <select name="" id="" class="serviceTerm"></select>
+                    <input type="number" id="nvr32chQty" , min="0" , max="5">) 32-channel network video recorder with
+                    <select name="" id="" class="hd"></select>TB storage & HDMI output;
+                </p>
+            </li>
+            <li>
+                <p class="recorder">
+                    <select name="" id="" class="serviceTerm"></select>
+                    <input type="number" id="nvr64chQty" , min="1" , max="5">) 64-channel network video recorder with
+                    <select name="" id="" class="hd"></select>TB storage & HDMI output;
+                </p>
+            </li>
+        </ul>
+
+
+    </div>
+
+    <div id="Analog" class="tabcontent">
+        <h2>Analog Camera System</h2>
+    </div>
+
+    <div id="Accessories">
+        <h2>Common Items</h2>
+    </div>
+
+    <button onclick="output()">Test</button>
+
+
+    <!-- <h1>Surveillance Quote Generator</h1>
 
     <select id="surveillance" onchange="selectSurveillance()">
         <option>IP Camera</option>
@@ -187,7 +272,7 @@
 
     <div id="output"></div>
 
-
+ -->
 
 </body>
 
