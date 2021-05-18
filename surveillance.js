@@ -1,3 +1,121 @@
+// Create spc Table for item selection
+var specTable = document.createElement("table");
+specTable.setAttribute("id", "specTable");
+specTable.setAttribute("border", "1");
+document.getElementById("IP").appendChild(specTable);
+
+// table structure
+var newRow = specTable.insertRow();
+var termCell = newRow.insertCell(0);
+var itemCell = newRow.insertCell(1);
+var qtyCell = newRow.insertCell(2);
+var detailCell = newRow.insertCell(3);
+
+// first row/head of table
+termCell.innerHTML = "Term";
+itemCell.innerHTML = "Item";
+qtyCell.innerHTML = "Quantity";
+detailCell.innerHTML = "Storage/Cable Length";
+
+// default service terms to fill out selects
+var serviceTerms = ["Provide: (", "Provide, Wire & Instal: (", "Provide & Install: (", "Provide, Install & Configure: ("];
+
+// default items
+var iPItems = ["4MP IP Dome", "4MP Elevator Cam", "Camera Cable", "8CH NVR", "16CH NVR", "32CH NVR", "64CH NVR", "16P POE", "24P POE"];
+var commonItems = ["22-inch Mon", "40-inch Mon", "HDMI Extender"];
+// var hdItems = ["2TB", "4TB", "8TB", "12TB", "16TB", "20TB", "24TB", "28TB", "32TB"];
+// var cableLength = [150, 180, 200, 250];
+
+
+// button function to add one row to spec table
+function add() {
+    newRow = specTable.insertRow(-1);
+
+    // create & insert first input cell for term selection
+    termCell = newRow.insertCell(0);
+    var serviceSelect = createSelect("serviceTerms", serviceTerms);
+    termCell.appendChild(serviceSelect);
+
+    itemCell = newRow.insertCell(1);
+    var itemSelect = createSelect("items", iPItems.concat(commonItems));
+    itemCell.appendChild(itemSelect);
+
+    qtyCell = newRow.insertCell(2);
+    var qtyInput = document.createElement("input");
+    qtyInput.setAttribute("type", "number");
+    qtyInput.setAttribute("max", 128);
+    qtyInput.setAttribute("min", 1);
+    qtyCell.appendChild(qtyInput);
+
+    // last cell shall appear conditionally
+    detailCell = newRow.insertCell(3);
+    // detailSelect.setAttribute("type", "number");
+    itemSelect.addEventListener("change", function () {
+        changeExtraCell(itemSelect, detailCell);
+    });
+    // console.log(detailSelect);
+    // detailCell.appendChild(detailInput);
+
+}
+
+// button function to remove one row from spec table
+function remove() {
+    specTable.deleteRow(-1);
+}
+
+// function to create select
+function createSelect(selectId, optionArr) {
+    var newSelect = document.createElement("select");
+    newSelect.setAttribute("className", selectId);
+    for (var optionText of optionArr) {
+        var option = document.createElement("option");
+        option.text = optionText;
+        newSelect.add(option);
+    }
+    return newSelect;
+}
+
+
+//default tab to display
+document.getElementById("IPBtn").click();
+
+// switch the input for the 4th cell input method
+function changeExtraCell(itemSelect, detailCell) {
+    // remove all children of current cell
+    while (detailCell.children.length > 0) {
+        detailCell.removeChild(detailCell.children[0]);
+    }
+
+    var detailInput = document.createElement("input");
+    detailInput.setAttribute("min", "0");
+
+    if (itemSelect.value.includes("Cable")) {
+        // console.log("cable selected");
+
+        detailInput.setAttribute("type", "number");
+        detailInput.setAttribute("max", "500");
+
+        detailCell.appendChild(detailInput);
+
+        var unit = document.createElement("label");
+        unit.innerHTML = "feet";
+        detailCell.appendChild(unit);
+
+    } else if (itemSelect.value.includes("VR")) {
+        // console.log("recorder selected");
+
+        detailInput.setAttribute("type", "number");
+        detailInput.setAttribute("max", "64");
+
+        detailCell.appendChild(detailInput);
+
+        var unit = document.createElement("label");
+        unit.innerHTML = "TB HDD";
+        detailCell.appendChild(unit);
+
+    }
+}
+
 //function to switch between tabs
 function selectSystem(tabName) {
     var tabContent = document.getElementsByClassName("tabcontent");
@@ -9,25 +127,18 @@ function selectSystem(tabName) {
     document.getElementById(tabName).style.display = "block";
 }
 
-//default tab to display
-document.getElementById("IPBtn").click();
 
-// default service terms to fill out selects
-var serviceTerms = ["Provide: (", "Provide, Wire & Instal: (", "Provide & Install: (", "Provide, Install & Configure: ("];
+// for (var i = 0; i < service.length; i++) {
 
-var service = document.getElementsByClassName("serviceTerm");
+//     for (var j = 0; j < serviceTerms.length; j++) {
+//         var option = document.createElement("option");
 
-for (var i = 0; i < service.length; i++) {
+//         option.innerHTML = serviceTerms[j];
 
-    for (var j = 0; j < serviceTerms.length; j++) {
-        var option = document.createElement("option");
+//         service[i].appendChild(option);
+//     }
 
-        option.innerHTML = serviceTerms[j];
-
-        service[i].appendChild(option);
-    }
-
-}
+// }
 
 // create select for recorder harddrive
 var hd = [2, 4, 6, 8, 10, 12, 16, 18, 20, 22, 24, 26, 28, 30, 32];
@@ -80,9 +191,8 @@ function output() {
         }
     }
 
-
-
 }
+
 
 
 
