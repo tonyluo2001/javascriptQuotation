@@ -53,14 +53,14 @@ function add() {
     itemSelect.addEventListener("change", function () {
         changeExtraCell(itemSelect, detailCell);
     });
-    // console.log(detailSelect);
-    // detailCell.appendChild(detailInput);
 
 }
 
 // button function to remove one row from spec table
 function remove() {
-    specTable.deleteRow(-1);
+    if (specTable.rows.length > 1) {
+        specTable.deleteRow(-1);
+    }
 }
 
 // function to create select
@@ -125,34 +125,6 @@ function selectSystem(tabName) {
     }
 
     document.getElementById(tabName).style.display = "block";
-}
-
-
-// for (var i = 0; i < service.length; i++) {
-
-//     for (var j = 0; j < serviceTerms.length; j++) {
-//         var option = document.createElement("option");
-
-//         option.innerHTML = serviceTerms[j];
-
-//         service[i].appendChild(option);
-//     }
-
-// }
-
-// create select for recorder harddrive
-var hd = [2, 4, 6, 8, 10, 12, 16, 18, 20, 22, 24, 26, 28, 30, 32];
-
-var hdSelect = document.getElementsByClassName("hd");
-
-for (var i = 0; i < hdSelect.length; i++) {
-    for (var j = 0; j < hd.length; j++) {
-        var option = document.createElement("option");
-
-        option.innerHTML = hd[j];
-
-        hdSelect[i].appendChild(option);
-    }
 }
 
 
