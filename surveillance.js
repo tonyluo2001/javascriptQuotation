@@ -1,3 +1,15 @@
+// class to create item objects, including both recorders (4 properties) and other items (3 properties)
+class Item {
+
+    constructor(term, name, qty, detail) {
+        this.term = term;
+        this.name = name;
+        this.qty = qty;
+        this.detail = detail;
+    }
+}
+
+
 // Create spc Table for item selection
 var specTable = document.createElement("table");
 specTable.setAttribute("id", "specTable");
@@ -5,11 +17,11 @@ specTable.setAttribute("border", "1");
 document.getElementById("IP").appendChild(specTable);
 
 // table structure
-var newRow = specTable.insertRow();
-var termCell = newRow.insertCell(0);
-var itemCell = newRow.insertCell(1);
-var qtyCell = newRow.insertCell(2);
-var detailCell = newRow.insertCell(3);
+let newRow = specTable.insertRow();
+let termCell = newRow.insertCell(0);
+let itemCell = newRow.insertCell(1);
+let qtyCell = newRow.insertCell(2);
+let detailCell = newRow.insertCell(3);
 
 // first row/head of table
 termCell.innerHTML = "Term";
@@ -18,7 +30,7 @@ qtyCell.innerHTML = "Quantity";
 detailCell.innerHTML = "Storage/Cable Length";
 
 // default service terms to fill out selects
-var serviceTerms = ["Provide: (", "Provide, Wire & Instal: (", "Provide & Install: (", "Provide, Install & Configure: ("];
+var serviceTerms = ["Provide: (", "Provide & Wire: (", "Provide, Wire & Instal: (", "Provide & Install: (", "Provide, Install & Configure: ("];
 
 // default items
 var iPItems = ["4MP IP Dome", "4MP Elevator Cam", "Camera Cable", "8CH NVR", "16CH NVR", "32CH NVR", "64CH NVR", "16P POE", "24P POE"];
@@ -29,29 +41,34 @@ var commonItems = ["22-inch Mon", "40-inch Mon", "HDMI Extender"];
 
 // button function to add one row to spec table
 function add() {
-    newRow = specTable.insertRow(-1);
+    let newRow = specTable.insertRow(-1);
 
     // create & insert first input cell for term selection
-    termCell = newRow.insertCell(0);
-    var serviceSelect = createSelect("serviceTerms", serviceTerms);
-    termCell.appendChild(serviceSelect);
+    let termCell = newRow.insertCell(0);
+    let termSelect = createSelect("serviceTerms", serviceTerms);
+    termCell.appendChild(termSelect);
 
-    itemCell = newRow.insertCell(1);
-    var itemSelect = createSelect("items", iPItems.concat(commonItems));
+
+    let itemCell = newRow.insertCell(1);
+    let itemSelect = createSelect("items", iPItems.concat(commonItems));
     itemCell.appendChild(itemSelect);
 
-    qtyCell = newRow.insertCell(2);
-    var qtyInput = document.createElement("input");
+
+    let qtyCell = newRow.insertCell(2);
+    let qtyInput = document.createElement("input");
     qtyInput.setAttribute("type", "number");
     qtyInput.setAttribute("max", 128);
     qtyInput.setAttribute("min", 1);
     qtyCell.appendChild(qtyInput);
 
+
     // last cell shall appear conditionally
-    detailCell = newRow.insertCell(3);
-    // detailSelect.setAttribute("type", "number");
+    let detailCell = newRow.insertCell(3);
+    let detailInput = document.createElement("input");
+    detailInput.setAttribute("min", "0");
+
     itemSelect.addEventListener("change", function () {
-        changeExtraCell(itemSelect, detailCell);
+        changeExtraCell(itemSelect, detailCell, detailInput);
     });
 
 }
@@ -80,14 +97,11 @@ function createSelect(selectId, optionArr) {
 document.getElementById("IPBtn").click();
 
 // switch the input for the 4th cell input method
-function changeExtraCell(itemSelect, detailCell) {
+function changeExtraCell(itemSelect, detailCell, detailInput) {
     // remove all children of current cell
     while (detailCell.children.length > 0) {
         detailCell.removeChild(detailCell.children[0]);
     }
-
-    var detailInput = document.createElement("input");
-    detailInput.setAttribute("min", "0");
 
     if (itemSelect.value.includes("Cable")) {
         // console.log("cable selected");
@@ -97,7 +111,7 @@ function changeExtraCell(itemSelect, detailCell) {
 
         detailCell.appendChild(detailInput);
 
-        var unit = document.createElement("label");
+        let unit = document.createElement("label");
         unit.innerHTML = "feet";
         detailCell.appendChild(unit);
 
@@ -109,7 +123,7 @@ function changeExtraCell(itemSelect, detailCell) {
 
         detailCell.appendChild(detailInput);
 
-        var unit = document.createElement("label");
+        let unit = document.createElement("label");
         unit.innerHTML = "TB HDD";
         detailCell.appendChild(unit);
 
@@ -129,13 +143,25 @@ function selectSystem(tabName) {
 
 
 function output() {
-    // var head = document.getElementById("input");
-    // var text = head.innerText;
-    // var description = text.slice(text.indexOf("(", -1));
-    // console.log(head.children[0].value);
-    // console.log(description);
 
+    var quoteArea = document.getElementById("quoteArea");
+    var quoteTable = document.createElement("table");
     var quoteDescription = [];
+
+    for (var i = 1; i < specTable.rows.length; i++) {
+        var row = specTable.rows[i];
+
+        var term = row.cells[0].children[0].value;
+        var itemName = row.cells[1].children[0].value;
+        var qty = row.cells[2].children[0].value;
+
+        var item = new Item(term, itemName, qty);
+        quoteDescription.push(item);
+    }
+
+    for (var item of quoteDescription) {
+        console.log(item.name + " " + item.qty);
+    }
 
     var recorderSet = document.getElementsByClassName("recorder");
     var itemSet = document.getElementsByClassName("items");
