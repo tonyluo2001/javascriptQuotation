@@ -12,6 +12,14 @@ var costTable = document.createElement("table");
 var quoteTable = document.createElement("table");
 var quoteArea = document.getElementById("quoteArea");
 
+var hdMap = new Map(
+    [
+        ["2TB", 0],
+        ["4TB", 0],
+        ["8TB", 0]
+    ]
+);
+
 // variable to keep the selection of analog/ip system
 var selectedSystem = "IP";
 
@@ -220,6 +228,16 @@ function changeExtraCell(itemSelect, detailCell, detailInput) {
 function output() {
 
     //  determine if there's an existing table. if yes, remove it
+
+    while (quoteTable.rows.length > 0) {
+        quoteTable.deleteRow(-1);
+    }
+
+    while (costTable.rows.length > 0) {
+        costTable.deleteRow(-1);
+    }
+
+
     while (quoteArea.children.length > 0) {
         quoteArea.removeChild(quoteArea.childNodes[0]);
     }
@@ -250,6 +268,7 @@ function output() {
         newCell.innerHTML = item.toString();
     }
 
+
     quoteArea.appendChild(quoteTable);
 
     costTable.setAttribute("border", "1");
@@ -267,98 +286,48 @@ function output() {
 
     }
 
+    calculateHD(quoteDescription);
+
     quoteArea.appendChild(costTable);
 
 }
 
+function calculateHD(quoteDescription) {
+    // COUNT THE 2TB, 4TB, 8TB FROM THE RECORDER ITEMS
+    // USE RECURSIVE FUNCTION, DEDUCE HD STORAGE UNTIL THEY REACH 2,4,8 THRESHOLDS. THEN COUNT
 
-// // DvrCifig class to process analog recorder calculation
-// class DvrConfig {
-//     constructor() {
-//         this.camQty = document.getElementById("camQty");
-//         this.dvr8ch = document.getElementById("dvr8ch");
-//         this.dvr16ch = document.getElementById("dvr16ch");
-//         this.dvr32ch = document.getElementById("dvr32ch");
-//         this.pb9ch = document.getElementById("pb9ch");
-//         this.pb18ch = document.getElementById("pb18ch");
-//         this.initializeAnalog();
-//     }
+    let hd2tb = 0;
+    let hd4tb = 0;
+    let hd8tb = 0;
 
-//     initializeAnalog() {
-//         this.dvr8ch.value = 0;
-//         this.dvr16ch.value = 0;
-//         this.dvr32ch.value = 0;
-//         this.pb9ch.value = 0;
-//         this.pb18ch.value = 0;
-//     }
+    for (let item of quoteDescription) {
+        if (item.name.includes("VR")) {
+            let capacity = item.detail;
+            while (capacity > 0) {
+                if (capacity >= 8) {
+                    capacity = capacity - 8;
+                    hd8tb += parseInt(item.qty);
+                } else if (capacity >= 4) {
+                    capacity = capacity - 4;
+                    hd4tb += parseInt(item.qty);
+                } else {
+                    capacity = capacity - 2;
+                    hd2tb += parseInt(item.qty);
+                }
+            }
+        }
+    }
 
-//     calculateAnalog() {
-//         this.initializeAnalog();
-//         // console.log("analog cameras: " + this.camQty.value);
-//         if (this.camQty.value <= 8) {
-//             this.dvr8ch.value = 1;
-//             if (this.camQty.value <= 4) {
-//                 this.pb9ch.value = 1;
-//             } else {
-//                 this.pb18ch.value = 1;
-//             }
-//         } else if (this.camQty.value <= 16) {
-//             this.dvr16ch.value = 1;
-//             this.pb18ch.value = 1;
-//         } else {
-//             this.dvr32ch.value = 1;
-//             this.pb18ch.value = 2;
-//         }
+    hdMap.set("2TB", hd2tb);
+    hdMap.set("4TB", hd4tb);
+    hdMap.set("8TB", hd8tb);
 
-//         hd2tb.value = parseInt(this.dvr8ch.value);
-//         hd4tb.value = parseInt(this.dvr16ch.value);
-//         hd8tb.value = parseInt(this.dvr32ch.value);
-//     }
+    for (let [key, value] of hdMap) {
+        let row = costTable.insertRow(-1);
+        let name = row.insertCell(0);
+        name.innerHTML = key;
+        let qty = row.insertCell(1);
+        qty.innerHTML = value;
+    }
 
-// }
-
-
-// function selectSurveillance() {
-//     surveillance = document.getElementById("surveillance");
-//     text = document.getElementById("camSelection");
-//     // camQty = parseInt(document.getElementById("camQty").value);
-//     // console.log(camQty);
-//     ipInput = document.getElementsByClassName("ip");    //a group of input for ip devices
-//     // console.log(ipInput);
-//     analogInput = document.getElementsByClassName("analog");    //a group of input for analog devices
-//     // console.log(analogInput);
-
-//     // console.log(surveillance.value);
-//     if (surveillance.value == "IP Camera") {
-//         text.innerHTML = "Quoting IP System";
-//         disableInput(analogInput);
-//         enableInput(ipInput);
-//         nvrConfig = new NvrConfig();
-//     } else if (surveillance.value == "Analog Camera") {
-//         text.innerHTML = "Quoting Analog System";
-//         disableInput(ipInput);
-//         enableInput(analogInput);
-//         dvrConfig = new DvrConfig();
-//     } else {
-//         disableInput(ipInput);
-//         disableInput(analogInput);
-//     }
-
-//     calculateRecorder();
-// }
-
-
-// enable inputs of either IP or analog system based on selection
-// function enableInput(inputGroup) {
-//     for (var i = 0; i < inputGroup.length; i++) {
-//         inputGroup[i].value = 0;
-//         inputGroup[i].disabled = false;
-//     }
-// }
-
-// //calculate hdd quantity based on recorder quantities
-// // function calculateHdd() {
-
-// // }
-
-
+}
