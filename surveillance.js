@@ -9,7 +9,8 @@ const recorderPadding = "TB storage and HDMI output;";
 
 var specTable = document.createElement("table");
 var costTable = document.createElement("table");
-
+var quoteTable = document.createElement("table");
+var quoteArea = document.getElementById("quoteArea");
 
 // variable to keep the selection of analog/ip system
 var selectedSystem = "IP";
@@ -75,9 +76,7 @@ function selectSystem(tabName) {
         tabContent[i].style.display = "none";
     }
 
-    while (specTable.rows.length >= 1) {
-        specTable.deleteRow(-1);
-    }
+    resetView();
 
     //show the selected tab/view
     document.getElementById(tabName).style.display = "block";
@@ -102,26 +101,25 @@ function selectSystem(tabName) {
     detailCell.innerHTML = "Storage/Cable Length";
 }
 
+// delete previous contents from specTable, costTable and quoteTable
+function resetView() {
+    while (specTable.rows.length >= 1) {
+        specTable.deleteRow(-1);
+    }
 
-// Create spc Table for item selection
-// var specTable = document.createElement("table");
-// specTable.setAttribute("id", "specTable");
-// specTable.setAttribute("border", "1");
-// document.getElementById(selectedSystem).appendChild(specTable);
+    while (costTable.rows.length > 0) {
+        costTable.deleteRow(-1);
+    }
 
-// // table structure
-// let newRow = specTable.insertRow();
-// let termCell = newRow.insertCell(0);
-// let itemCell = newRow.insertCell(1);
-// let qtyCell = newRow.insertCell(2);
-// let detailCell = newRow.insertCell(3);
+    while (quoteTable.rows.length > 0) {
+        quoteTable.deleteRow(-1);
+    }
 
-// // first row/head of table
-// termCell.innerHTML = "Term";
-// itemCell.innerHTML = "Item";
-// qtyCell.innerHTML = "Quantity";
-// detailCell.innerHTML = "Storage/Cable Length";
-
+    // clear contents in quoteArea
+    while (quoteArea.children.length > 0) {
+        quoteArea.removeChild(quoteArea.childNodes[0]);
+    }
+}
 
 // button function to add one row to spec table
 function add(selectedSystem) {
@@ -161,7 +159,7 @@ function add(selectedSystem) {
 
 }
 
-// button function to remove one row from spec table
+// button function to remove one row from specTable
 function remove() {
     if (specTable.rows.length > 1) {
         specTable.deleteRow(-1);
@@ -222,12 +220,9 @@ function changeExtraCell(itemSelect, detailCell, detailInput) {
 function output() {
 
     //  determine if there's an existing table. if yes, remove it
-    let quoteArea = document.getElementById("quoteArea");
     while (quoteArea.children.length > 0) {
         quoteArea.removeChild(quoteArea.childNodes[0]);
     }
-
-    let quoteTable = document.createElement("table");
 
     let quoteDescription = [];
 
