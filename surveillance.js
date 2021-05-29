@@ -3,8 +3,16 @@ const serviceTerms = ["Provide: ", "Provide & Wire: ", "Provide, Wire & Instal: 
 
 // default items
 const iPItems = ["4MP IP Dome", "4MP Elevator Cam", "CAT6 Cable", "8CH NVR", "16CH NVR", "32CH NVR", "64CH NVR", "16P POE", "24P POE"];
+const analogItems = ["TVI-HD Dom", "Siamese Cable", "8CH DVR", "16CH DVR", "32CH DVR", "9CH Power Box", "18CH Power Box"];
 const commonItems = ["22-inch Mon", "40-inch Mon", "HDMI Extender"];
 const recorderPadding = "TB storage and HDMI output;";
+
+var specTable = document.createElement("table");
+var costTable = document.createElement("table");
+
+
+// variable to keep the selection of analog/ip system
+var selectedSystem = "IP";
 
 const descriptMap = new Map(
     [
@@ -22,6 +30,8 @@ const descriptMap = new Map(
         ["CAT6 Cable", " 4-pr CAT6 cables for cameras;"],
         ["4MP IP Dome", " 4MP fixed wide-angle network dome camera;"],
         ["4MP Elevator Cam", " 4MP fixed wide-angle network elevator camera;"],
+        ["TVI-HD Dom", "TVI-HD Wide-Angle analog dome camera;"],
+        ["Siamese Cable", "95% copper Siamese cable for cameras;"],
         ["22-inch Mon", " 22-inch FHD surveillance monitor;"],
         ["40-inch Mon", " 40-inch 4K surveillance TV;"],
         ["HDMI Extender", " HDMI over CAT6 extender for monitor;"]
@@ -54,30 +64,67 @@ class Item {
 
 }
 
+//function to switch between tabs
+function selectSystem(tabName) {
+    // clear the current tab/view
+    var tabContent = document.getElementsByClassName("tabcontent");
+
+    selectedSystem = tabName;
+
+    for (var i = 0; i < tabContent.length; i++) {
+        tabContent[i].style.display = "none";
+    }
+
+    while (specTable.rows.length >= 1) {
+        specTable.deleteRow(-1);
+    }
+
+    //show the selected tab/view
+    document.getElementById(tabName).style.display = "block";
+
+    // Create spcTable for item selection
+    specTable.setAttribute("id", "specTable");
+    specTable.setAttribute("border", "1");
+
+    document.getElementById(selectedSystem).appendChild(specTable);
+
+    // table structure
+    let newRow = specTable.insertRow();
+    let termCell = newRow.insertCell(0);
+    let itemCell = newRow.insertCell(1);
+    let qtyCell = newRow.insertCell(2);
+    let detailCell = newRow.insertCell(3);
+
+    // first row/head of table
+    termCell.innerHTML = "Term";
+    itemCell.innerHTML = "Item";
+    qtyCell.innerHTML = "Quantity";
+    detailCell.innerHTML = "Storage/Cable Length";
+}
+
 
 // Create spc Table for item selection
-var specTable = document.createElement("table");
-specTable.setAttribute("id", "specTable");
-specTable.setAttribute("border", "1");
-document.getElementById("IP").appendChild(specTable);
+// var specTable = document.createElement("table");
+// specTable.setAttribute("id", "specTable");
+// specTable.setAttribute("border", "1");
+// document.getElementById(selectedSystem).appendChild(specTable);
 
-// table structure
-let newRow = specTable.insertRow();
-let termCell = newRow.insertCell(0);
-let itemCell = newRow.insertCell(1);
-let qtyCell = newRow.insertCell(2);
-let detailCell = newRow.insertCell(3);
+// // table structure
+// let newRow = specTable.insertRow();
+// let termCell = newRow.insertCell(0);
+// let itemCell = newRow.insertCell(1);
+// let qtyCell = newRow.insertCell(2);
+// let detailCell = newRow.insertCell(3);
 
-// first row/head of table
-termCell.innerHTML = "Term";
-itemCell.innerHTML = "Item";
-qtyCell.innerHTML = "Quantity";
-detailCell.innerHTML = "Storage/Cable Length";
-
+// // first row/head of table
+// termCell.innerHTML = "Term";
+// itemCell.innerHTML = "Item";
+// qtyCell.innerHTML = "Quantity";
+// detailCell.innerHTML = "Storage/Cable Length";
 
 
 // button function to add one row to spec table
-function add() {
+function add(selectedSystem) {
     let newRow = specTable.insertRow(-1);
 
     // create & insert first input cell for term selection
@@ -85,9 +132,13 @@ function add() {
     let termSelect = createSelect("serviceTerms", serviceTerms);
     termCell.appendChild(termSelect);
 
-
     let itemCell = newRow.insertCell(1);
-    let itemSelect = createSelect("items", iPItems.concat(commonItems));
+    let itemSelect = [];
+    if (selectedSystem == "Analog") {
+        itemSelect = createSelect("items", analogItems.concat(commonItems));
+    } else {
+        itemSelect = createSelect("items", iPItems.concat(commonItems));
+    }
     itemCell.appendChild(itemSelect);
 
 
@@ -167,27 +218,15 @@ function changeExtraCell(itemSelect, detailCell, detailInput) {
     }
 }
 
-//function to switch between tabs
-function selectSystem(tabName) {
-    var tabContent = document.getElementsByClassName("tabcontent");
-
-    for (var i = 0; i < tabContent.length; i++) {
-        tabContent[i].style.display = "none";
-    }
-
-    document.getElementById(tabName).style.display = "block";
-}
-
 
 function output() {
 
     //  determine if there's an existing table. if yes, remove it
     let quoteArea = document.getElementById("quoteArea");
-    while (quoteArea.hasChildNodes()) {
+    while (quoteArea.children.length > 0) {
         quoteArea.removeChild(quoteArea.childNodes[0]);
     }
 
-    // 
     let quoteTable = document.createElement("table");
 
     let quoteDescription = [];
@@ -217,6 +256,23 @@ function output() {
     }
 
     quoteArea.appendChild(quoteTable);
+
+    costTable.setAttribute("border", "1");
+
+    for (let item of quoteDescription) {
+        let row = costTable.insertRow();
+        let name = row.insertCell(0);
+        name.innerHTML = item.name;
+        let qty = row.insertCell(1);
+        if (item.name.includes("Cable")) {
+            qty.innerHTML = item.qty * item.detail / 1000; // calculate cable length and put in quantity
+        } else {
+            qty.innerHTML = item.qty;
+        }
+
+    }
+
+    quoteArea.appendChild(costTable);
 
 }
 

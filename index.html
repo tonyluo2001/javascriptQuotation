@@ -25,6 +25,10 @@
         .tablink:hover {
             background-color: gray;
         }
+
+        table {
+            border: 1px solid;
+        }
     </style>
 
 
@@ -47,14 +51,23 @@
 
     <div id="Analog" class="tabcontent">
         <h2>Analog Camera System</h2>
+
+        <button onclick="add()"> Add item </button>
+
+        <button onclick="remove()">Remove item</button>
+
     </div>
 
+    <br><br>
+
+    <button onclick="output()">Generate</button>
+    <br><br>
+
+    <h2>Quotation</h2>
     <div id="quoteArea">
-        <h2>Quotation</h2>
 
     </div>
 
-    <button onclick="output()">Test</button>
 
 
     <!-- <h1>Surveillance Quote Generator</h1>
