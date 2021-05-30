@@ -39,8 +39,8 @@ const descriptMap = new Map(
         ["CAT6 Cable", " 4-pr CAT6 cables for cameras;"],
         ["4MP IP Dome", " 4MP fixed wide-angle network dome camera;"],
         ["4MP Elevator Cam", " 4MP fixed wide-angle network elevator camera;"],
-        ["TVI-HD Dom", "TVI-HD Wide-Angle analog dome camera;"],
-        ["Siamese Cable", "95% copper Siamese cable for cameras;"],
+        ["TVI-HD Dom", " TVI-HD Wide-Angle analog dome camera;"],
+        ["Siamese Cable", " 95% copper Siamese cable for cameras;"],
         ["22-inch Mon", " 22-inch FHD surveillance monitor;"],
         ["40-inch Mon", " 40-inch 4K surveillance TV;"],
         ["HDMI Extender", " HDMI over CAT6 extender for monitor;"]
@@ -84,7 +84,7 @@ function selectSystem(tabName) {
         tabContent[i].style.display = "none";
     }
 
-    resetView();
+    resetView("all");
 
     //show the selected tab/view
     document.getElementById(tabName).style.display = "block";
@@ -110,9 +110,12 @@ function selectSystem(tabName) {
 }
 
 // delete previous contents from specTable, costTable and quoteTable
-function resetView() {
-    while (specTable.rows.length >= 1) {
-        specTable.deleteRow(-1);
+function resetView(area) {
+
+    if (area == "all") {
+        while (specTable.rows.length >= 1) {
+            specTable.deleteRow(-1);
+        }
     }
 
     while (costTable.rows.length > 0) {
@@ -229,18 +232,20 @@ function output() {
 
     //  determine if there's an existing table. if yes, remove it
 
-    while (quoteTable.rows.length > 0) {
-        quoteTable.deleteRow(-1);
-    }
+    // while (quoteTable.rows.length > 0) {
+    //     quoteTable.deleteRow(-1);
+    // }
 
-    while (costTable.rows.length > 0) {
-        costTable.deleteRow(-1);
-    }
+    // while (costTable.rows.length > 0) {
+    //     costTable.deleteRow(-1);
+    // }
 
 
-    while (quoteArea.children.length > 0) {
-        quoteArea.removeChild(quoteArea.childNodes[0]);
-    }
+    // while (quoteArea.children.length > 0) {
+    //     quoteArea.removeChild(quoteArea.childNodes[0]);
+    // }
+
+    resetView("quoteArea");
 
     let quoteDescription = [];
 
